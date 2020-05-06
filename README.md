@@ -12,6 +12,6 @@ I will implement this app in Python. Packages I will use will (probably) include
 * create_network: function that creates a network from user input about social network (using the input, networkx.Graph and plot function).
 * simulate_spread: start with one node that gets infected, and simulate how the infection would spread throughout the network. Every time this function is called, it will update which nodes are infected, and this will be used to create a new network.
 
-##FLOW
+## FLOW
 [ask user for input] > [create network] > [ask user for input] > [update network] > [… repeat this as much as wanted] > [simulate spread]
 
