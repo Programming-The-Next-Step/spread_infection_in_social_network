@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1589900994049.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3363128959",
+    "id" : "32F2BDB9",
+    "lastKnownWriteTime" : 1589902168,
+    "last_content_update" : 1589902168273,
+    "path" : "~/GitHub/spread_infection_in_social_network/SNsimulation/R/social_network_simulation.R",
+    "project_path" : "SNsimulation/R/social_network_simulation.R",
+    "properties" : {
+        "cursorPosition" : "14,24",
+        "scrollLine" : "1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

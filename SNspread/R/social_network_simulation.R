@@ -1,0 +1,113 @@
+
+
+# Create network ----------------------------------------------------------
+
+#' Create initial network
+#'
+#' This function creates a network based on the amount of friends a user inputs.
+#'
+#' @param n Numeric vector of length 1. Is the number of friends in network.
+#'
+#' @return Data frame including weight matrix from the network,
+#'         infection status and gender of nodes in network.
+#'
+#' @examples
+#' network <- create_network(n = 15)
+#' create_graph(network)
+#'
+#' @details
+#' This function creates a network with user and his/her friends as nodes,
+#' edges between user and friends, and random edges between some friends.
+#'
+#' @export
+create_network <- function (n = 10) {
+
+  # Make weight list
+  weight_matrix <- data.frame(matrix(data = 0, nrow = (n + 1), ncol = (n + 3)))
+  rownames(weight_matrix) = c("user", paste("friend", 1:n, sep = ""))
+  colnames(weight_matrix) = c("user", paste("friend", 1:n, sep = ""), "disease", "gender")
+
+  # Make connection between user and friends
+  weight_matrix["user", 2:(n+1)] <- 1
+  weight_matrix[2:(n+1), "user"] <- 1
+
+  # Simulate some additional bidirectional friendships
+  n_friendships <- sample(1:((n * (n - 1)) / 2), 1)
+  for (i in 1:n_friendships) {
+    new_friends <- sample(1:n, 2)
+    weight_matrix[(1 + new_friends[1]), (1 + new_friends[2])] <- 1
+    weight_matrix[(1 + new_friends[2]), (1 + new_friends[1])] <- 1
+  }
+
+  # Remove connection with self
+  diag(weight_matrix[1:(n + 1), 1:(n + 1)]) <- 0
+
+  return(weight_matrix)
+}
+
+
+
+# ADD FUNCTION update network
+
+
+# Create graph for network ------------------------------------------------
+
+#' Create graph based on network
+#'
+#' @param weight_matrix Data frame including weight matrix from a network,
+#'                      infection status and gender of nodes in network.
+#'
+#' @export
+create_graph <- function (weight_matrix) {
+
+  # Ask for user input before continuing to next graph
+  readline(prompt = "Press [enter] to continue to next graph")
+
+  # Plot graph
+  qgraph::qgraph(weight_matrix[, 1:(ncol(weight_matrix) - 2)],
+                 color = c("gray", "red"),
+                 groups = weight_matrix$disease,
+                 edge.color = "blue")
+}
+
+
+# Simulate spread of disease ----------------------------------------------
+
+#' Simulate spread of disease in network
+#'
+#' @param weight_matrix Data frame including weight matrix from a network,
+#'                      infection status and gender of nodes in network.
+#'
+#' @param spread_rate Integer that states how many nodes in network should
+#'                    be infected.
+#'
+#' @export
+sim_spread <- function (weight_matrix, spread_rate = 2) {
+
+  # Make sure user inputs spread_rate as integer
+  if (spread_rate%%1 != 0) {
+    stop("spread_rate should be an integer")
+  }
+
+  # Simulate spread
+  if (all(weight_matrix$disease == 0)) {
+    # Infect user first
+    weight_matrix$disease[which(rownames(weight_matrix) == "user")] <- "infected"
+    weight_matrix$disease <- as.factor(weight_matrix$disease)
+
+  } else {
+    # Infect nodes connected to already infected nodes
+    for (node in grep("infected", weight_matrix$disease)) {
+      # Search for nodes to infect
+      temp_sample <- grep(1, weight_matrix[node, 1:nrow(weight_matrix)])
+
+      # Remove already infected nodes
+      temp_sample <- temp_sample[weight_matrix$disease[temp_sample] != "infected"]
+
+      # Infect nodes
+      weight_matrix$disease[sample(temp_sample, spread_rate)] <-"infected"
+    }
+  }
+
+  return(weight_matrix)
+}
