@@ -3,3 +3,4 @@
 export(create_graph)
 export(create_network)
 export(sim_spread)
+export(update_network)

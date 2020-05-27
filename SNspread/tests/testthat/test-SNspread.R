@@ -34,3 +34,15 @@ test_that("sim_spread infects nodes with spread_rate", {
   expect_equal(sum(test_network3v3$disease == "infected"), 16)
 
 })
+
+test_that("sim_spread stops infecting when all nodes are infected", {
+
+  test_network4 <- create_network(n = 8)
+  spread_rate <- 5
+
+  test_network4v1 <- sim_spread(test_network4, spread_rate = spread_rate)
+  test_network4v2 <- sim_spread(test_network4v1, spread_rate = spread_rate)
+
+  expect_warning(sim_spread(test_network4v2, spread_rate = spread_rate))
+
+})
