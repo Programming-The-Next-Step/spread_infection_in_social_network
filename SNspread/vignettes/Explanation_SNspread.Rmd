@@ -1,0 +1,59 @@
+---
+title: "Explanation of SNspread package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Explanation of SNspread package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Overview
+- Functionality
+- Basic usage
+- Shiny interface
+
+### Functionality
+The ```SNspread``` package gives you the ability to create a network of friends
+(```create_network```), update their gender and names (```update_network```), and
+visualize the network with ```create_graph```. Moreover, the spread of disease 
+within the network can be simulated using the ```sim_spread``` function. Code to use
+the package as a shiny app is also provided.
+
+### Basic usage
+Example of how to use the package.
+
+```{r basic}
+library(SNspread)
+library(qgraph)
+network1 <- create_network(n = 25)
+network1v1 <- update_network(network1, names = c("Jan", "Piet", "Else", "Sarah"))
+network1v2 <- sim_spread(network1v1, spread_rate = 5)
+network1v3 <- sim_spread(network1v2, spread_rate = 5)
+create_graph(network1) # Initial network
+create_graph(network1v1) # Updated network
+create_graph(network1v2) # Spread starts with user
+create_graph(network1v3) # Simulate spread through network
+```
+
+Note that you can also change the gender of friends, using the ```update_graph``` 
+function. For example:
+
+```{r extra}
+size <- 15
+network2 <- create_network(n = size)
+network2v1 <- update_network(network2, gender = sample(c(1, 2), (size + 1), replace = TRUE))
+create_graph(network2v1)
+```
+
+
+### Shiny interface
+Besides the basic usage of the package, the package can also be ran as a ShinyApp.
+The server.R and ui.R are provided in the package. This gives you the possibility to
+update the network per node, and to simulate the spread of a disease several times.

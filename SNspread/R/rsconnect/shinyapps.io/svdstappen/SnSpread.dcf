@@ -1,0 +1,13 @@
+name: SnSpread
+title: SnSpread
+username:
+account: svdstappen
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2385978
+bundleId: 3211572
+url: https://svdstappen.shinyapps.io/SnSpread/
+when: 1590954586.54931
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: SNspread.R
